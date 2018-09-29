@@ -1,5 +1,8 @@
 # kubectl-pf-service
 
+![Docker Build](https://img.shields.io/docker/build/louisvernon/kubectl-pf-service.svg)
+
+
 If you want to expose a service from Kubernetes Cluster A within Kubernetes Cluster B you probably shouldn't do it this way.
 
 But if you insist, you could...
