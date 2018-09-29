@@ -1,0 +1,62 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    component: kubectl-pf
+  name: kubectl-pf
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      component: kubectl-pf
+  template:
+    metadata:
+      labels:
+        component: kubectl-pf
+    spec:
+      containers:
+      - args:
+        - service/myservice # service
+        - default # namespace
+        - "8000" # port
+        image: louisvernon/kubectl-pf:latest
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 1
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          tcpSocket:
+            port: 8000
+        name: kubectl-pf
+        ports:
+        - containerPort: 8000
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /root/.kube
+          name: kube-config
+          readOnly: true
+      volumes:
+      - name: kube-config
+        secret:
+          defaultMode: 420
+          items:
+          - key: kube-config
+            path: config
+          secretName: kubectl-pf-kube-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    component: kubectl-pf
+  name: kubectl-pf
+  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 8000
+    protocol: TCP
+  selector:
+    component: kubectl-pf
+  type: ClusterIP
