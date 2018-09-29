@@ -1,4 +1,4 @@
-FROM lachlanevenson/k8s-kubectlv1.11.3
+FROM lachlanevenson/k8s-kubectl:v1.11.3
 
 ADD run.sh /run.sh
 
