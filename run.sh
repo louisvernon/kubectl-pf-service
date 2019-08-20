@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 if [ "$1" = "help" ]; then
   echo "args: service namespace port"
   exit 0
